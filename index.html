@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Hookah</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div id="tela-dashboard" class="tela ativa">
+        <h1>Dashboard</h1>
+    </div>
+
+    <div id="tela-vendas" class="tela">
+        <h1>Vendas</h1>
+
+        <h2>Nova Venda</h2>
+
+        <form id="formVenda" onsubmit="salvarVenda(event)">
+
+            <label for="produto">Produto</label>
+            <input type="text" id="produto" placeholder="Nome do produto" required>
+
+            <label for="valor">Valor</label>
+            <input type="number" id="valor de vendas" placeholder="0,00" step="0.01" required>
+
+            <label for="pagamento">Forma de Pagamento</label>
+            <select id="pagamento" required>
+                <option value="">Selecione</option>
+                <option value="Dinheiro">Dinheiro</option>
+                <option value="PIX">PIX</option>
+                <option value="Crédito">Crédito</option>
+            </select>
+
+            <button type="submit">Salvar Venda</button>
+
+        </form>
+    </div>
+
+    <div id="tela-despesas" class="tela">
+        <h1>Despesas</h1>
+        <form id="formDespesa" onsubmit="salvarDespesa(event)">
+            <label for="Despesa">Produto</label>
+            <input type="text" id="Despesa" placeholder="Nome da despesa" required>
+            <label for="valor">Valor</label>
+            <input type="number" id="valor de despesas" placeholder="0,00" step="0.01" required>
+            <button type="submit">Salvar Despesa</button>
+        </form>
+    </div>
+
+    <div id="tela-historico" class="tela">
+        <h1>Histórico</h1>
+        <div id="listaHistorico"></div>
+        
+    </div>
+
+
+
+
+    </div>
+
+    <div id="tela-comanda" class="tela">
+    <h1>Comanda</h1>
+
+    <label for="cliente">Nome do Cliente</label>
+    <input type="text" id="cliente" placeholder="Nome do cliente">
+
+    <label for="itemComanda">Item</label>
+    <input type="text" id="itemComanda" placeholder="Ex: Love 66">
+
+    <label for="valorComanda">Valor</label>
+    <input type="number" id="valorComanda" placeholder="0,00" step="0.01">
+
+    <button onclick="adicionarItemComanda()">
+        Adicionar Item
+    </button>
+
+    <h2>Itens Consumidos</h2>
+
+    <div id="listaComanda"></div>
+
+    <h2>Total: R$ <span id="totalComanda">0.00</span></h2>
+
+    <select id="pagamentoComanda">
+        <option value="">Forma de pagamento</option>
+        <option value="PIX">PIX</option>
+        <option value="Dinheiro">Dinheiro</option>
+        <option value="Crédito">Crédito</option>
+    </select>
+
+    <button onclick="fecharComanda()">
+        Fechar Comanda
+    </button>
+</div>
+
+    <nav>
+        <button onclick="mudarTela('tela-dashboard')">Dashboard</button>
+        <button onclick="mudarTela('tela-vendas')">Vendas</button>
+        <button onclick="mudarTela('tela-despesas')">Despesas</button>
+        <button onclick="mudarTela('tela-historico'); carregarHistorico()">Histórico</button>
+        <button onclick="mudarTela('tela-comanda')">Comanda</button>
+    </nav>
+
+    <script src="js/app.js"></script>
+
+</body>
+</html>
