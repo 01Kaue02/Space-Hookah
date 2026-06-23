@@ -9,7 +9,28 @@
 <body>
 
     <div id="tela-dashboard" class="tela ativa">
-        <h1>Dashboard</h1>
+    <h1>Dashboard</h1>
+
+    <div class="card">
+        <span>💰 Vendas</span>
+        <strong id="totalVendas">R$ 0,00</strong>
+    </div>
+
+    <div class="card">
+        <span>📉 Despesas</span>
+        <strong id="totalDespesas">R$ 0,00</strong>
+    </div>
+
+    <div class="card">
+        <span>📊 Lucro</span>
+        <strong id="totalLucro">R$ 0,00</strong>
+    </div>
+
+    <div class="card">
+        <span>🧾 Comandas</span>
+        <strong id="totalComandas">0</strong>
+    </div>
+</div>
     </div>
 
     <div id="tela-vendas" class="tela">
@@ -23,7 +44,7 @@
             <input type="text" id="produto" placeholder="Nome do produto" required>
 
             <label for="valor">Valor</label>
-            <input type="number" id="valor de vendas" placeholder="0,00" step="0.01" required>
+            <input type="number" id="valorVendas" placeholder="0,00" step="0.01" required>
 
             <label for="pagamento">Forma de Pagamento</label>
             <select id="pagamento" required>
@@ -44,7 +65,7 @@
             <label for="Despesa">Produto</label>
             <input type="text" id="Despesa" placeholder="Nome da despesa" required>
             <label for="valor">Valor</label>
-            <input type="number" id="valor de despesas" placeholder="0,00" step="0.01" required>
+           <input type="number" id="valorDespesas" placeholder="0,00" step="0.01" required>
             <button type="submit">Salvar Despesa</button>
         </form>
     </div>
@@ -54,52 +75,59 @@
         <div id="listaHistorico"></div>
         
     </div>
-
-
-
-
     </div>
 
     <div id="tela-comanda" class="tela">
-    <h1>Comanda</h1>
+    <h1>Comandas</h1>
 
-    <label for="cliente">Nome do Cliente</label>
-    <input type="text" id="cliente" placeholder="Nome do cliente">
-
-    <label for="itemComanda">Item</label>
-    <input type="text" id="itemComanda" placeholder="Ex: Love 66">
-
-    <label for="valorComanda">Valor</label>
-    <input type="number" id="valorComanda" placeholder="0,00" step="0.01">
-
-    <button onclick="adicionarItemComanda()">
-        Adicionar Item
+    <button onclick="abrirModalNovaComanda()" class="btn-nova-comanda">
+        Iniciar Nova Comanda
     </button>
 
-    <h2>Itens Consumidos</h2>
+    <div id="listaComandas"></div>
 
-    <div id="listaComanda"></div>
+    <!-- Modal nova comanda -->
+    <div id="modalComanda" class="modal" style="display:none">
+        <div class="modal-conteudo">
+            <h2 id="tituloModal">Nova Comanda</h2>
 
-    <h2>Total: R$ <span id="totalComanda">0.00</span></h2>
+            <label>Cliente</label>
+            <input type="text" id="clienteModal" placeholder="Nome do cliente">
 
-    <select id="pagamentoComanda">
-        <option value="">Forma de pagamento</option>
-        <option value="PIX">PIX</option>
-        <option value="Dinheiro">Dinheiro</option>
-        <option value="Crédito">Crédito</option>
-    </select>
+            <label>Item</label>
+            <input type="text" id="itemModal" placeholder="Ex: Love 66">
 
-    <button onclick="fecharComanda()">
-        Fechar Comanda
-    </button>
+            <label>Valor</label>
+            <input type="number" id="valorModal" placeholder="0,00" step="0.01">
+
+            <button onclick="adicionarItemModal()">Adicionar Item</button>
+
+            <div id="listaItensModal"></div>
+            <h3>Total: R$ <span id="totalModal">0.00</span></h3>
+
+            <label>Forma de Pagamento</label>
+            <select id="pagamentoModal">
+                <option value="">Selecione</option>
+                <option value="PIX">PIX</option>
+                <option value="Dinheiro">Dinheiro</option>
+                <option value="Crédito">Crédito</option>
+            </select>
+
+            <div class="modal-botoes">
+                <button onclick="fecharModal()">Cancelar</button>
+                <button onclick="salvarComanda()">Salvar</button>
+                <button onclick="fecharComandaAtual()" class="btn-fechar-comanda">Fechar Comanda</button>
+            </div>
+        </div>
+    </div>
 </div>
 
     <nav>
-        <button onclick="mudarTela('tela-dashboard')">Dashboard</button>
+        <button onclick="mudarTela('tela-dashboard'); carregarDashboard()">Dashboard</button>
         <button onclick="mudarTela('tela-vendas')">Vendas</button>
         <button onclick="mudarTela('tela-despesas')">Despesas</button>
         <button onclick="mudarTela('tela-historico'); carregarHistorico()">Histórico</button>
-        <button onclick="mudarTela('tela-comanda')">Comanda</button>
+        <button onclick="mudarTela('tela-comanda'); carregarComandasAbertas()">Comanda</button>
     </nav>
 
     <script src="js/app.js"></script>
