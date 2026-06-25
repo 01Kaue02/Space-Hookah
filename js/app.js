@@ -42,7 +42,12 @@ function salvarDespesa(event) {
     alert('Despesa salva com sucesso!');
     document.getElementById('formDespesa').reset();
 }
-function carregarHistorico() {
+
+let filtroAtivo = 'todos';
+
+function carregarHistorico(filtro = filtroAtivo, data = null) {
+
+    filtroAtivo = filtro;
 
     const vendas = JSON.parse(localStorage.getItem('vendas') || '[]');
     const despesas = JSON.parse(localStorage.getItem('despesas') || '[]');
@@ -51,36 +56,89 @@ function carregarHistorico() {
     const lista = document.getElementById('listaHistorico');
     lista.innerHTML = '';
 
-    vendas.forEach(venda => {
-        lista.innerHTML += `
-            <div class="item-historico venda">
-                🟢 Venda - ${venda.produto} - R$ ${venda.valor} - ${new Date(venda.data).toLocaleDateString('pt-BR')}
-            </div>
-        `;
-    });
+    function baterData(dataRegistro) {
+        if (!data) return true;
+        const d = new Date(dataRegistro).toLocaleDateString('pt-BR');
+        return d === data;
+    }
 
-    despesas.forEach(despesa => {
-        lista.innerHTML += `
-            <div class="item-historico despesa">
-                🔴 Despesa - ${despesa.despesa} - R$ ${despesa.valor} - ${new Date(despesa.data).toLocaleDateString('pt-BR')}
-            </div>
-        `;
-    });
+    function baterDataString(dataString) {
+        if (!data) return true;
+        return dataString === data;
+    }
 
-    comandas.forEach(comanda => {
-        const itensLista = comanda.itens.map(i => `• ${i.item}`).join('<br>');
-        lista.innerHTML += `
-            <div class="item-historico comanda">
-                🧾 Comanda - ${comanda.cliente}<br>
-                Pagamento: ${comanda.pagamento}<br>
-                Total: R$ ${comanda.total.toFixed(2)}<br>
-                <small>${itensLista}</small><br>
-                <small>${comanda.data}</small>
-            </div>
-        `;
-    });
+    if (filtro === 'todos' || filtro === 'venda') {
+        vendas
+            .filter(v => baterData(v.data))
+            .forEach(venda => {
+                lista.innerHTML += `
+                    <div class="item-historico venda">
+                        🟢 Venda - ${venda.produto} - R$ ${parseFloat(venda.valor).toFixed(2)} - ${new Date(venda.data).toLocaleDateString('pt-BR')}
+                    </div>
+                `;
+            });
+    }
+
+    if (filtro === 'todos' || filtro === 'despesa') {
+        despesas
+            .filter(d => baterData(d.data))
+            .forEach(despesa => {
+                lista.innerHTML += `
+                    <div class="item-historico despesa">
+                        🔴 Despesa - ${despesa.despesa} - R$ ${parseFloat(despesa.valor).toFixed(2)} - ${new Date(despesa.data).toLocaleDateString('pt-BR')}
+                    </div>
+                `;
+            });
+    }
+
+    if (filtro === 'todos' || filtro === 'comanda') {
+        comandas
+            .filter(c => baterDataString(c.data))
+            .forEach(comanda => {
+                const itensLista = comanda.itens.map(i => `• ${i.item}`).join('<br>');
+                lista.innerHTML += `
+                    <div class="item-historico comanda">
+                        🧾 Comanda - ${comanda.cliente}<br>
+                        Pagamento: ${comanda.pagamento}<br>
+                        Total: R$ ${comanda.total.toFixed(2)}<br>
+                        <small>${itensLista}</small><br>
+                        <small>${comanda.data}</small>
+                    </div>
+                `;
+            });
+    }
+
+    if (lista.innerHTML === '') {
+        lista.innerHTML = '<p style="margin:20px;color:#888">Nenhum registro encontrado</p>';
+    }
 }
-let itensComanda = [];
+
+function filtrarHistorico(filtro, botao) {
+    document.querySelectorAll('.filtro').forEach(b => b.classList.remove('ativo'));
+    botao.classList.add('ativo');
+    const input = document.getElementById('filtroData').value;
+    const data = input
+        ? new Date(input + 'T00:00:00').toLocaleDateString('pt-BR')
+        : null;
+    carregarHistorico(filtro, data);
+}
+
+function aplicarFiltroData() {
+    const input = document.getElementById('filtroData').value;
+    if (!input) {
+        alert('Selecione uma data');
+        return;
+    }
+    const data = new Date(input + 'T00:00:00').toLocaleDateString('pt-BR');
+    carregarHistorico(filtroAtivo, data);
+}
+
+function limparFiltroData() {
+    document.getElementById('filtroData').value = '';
+    carregarHistorico(filtroAtivo, null);
+}
+
+
 function adicionarItemComanda() {
 
     const item = document.getElementById('itemComanda').value;
@@ -179,14 +237,20 @@ function carregarDashboard() {
     const comandas = JSON.parse(localStorage.getItem('comandas') || '[]');
 
     const totalVendas = vendas.reduce((soma, v) => soma + parseFloat(v.valor), 0);
+    const totalComandas = comandas.reduce((soma, c) => soma + parseFloat(c.total), 0);
     const totalDespesas = despesas.reduce((soma, d) => soma + parseFloat(d.valor), 0);
-    const lucro = totalVendas - totalDespesas;
 
-    document.getElementById('totalVendas').textContent = `R$ ${totalVendas.toFixed(2)}`;
+    const totalGeral = totalVendas + totalComandas;
+    const lucro = totalGeral - totalDespesas;
+    const ticketMedio = comandas.length > 0 ? totalComandas / comandas.length : 0;
+
+    document.getElementById('totalVendas').textContent = `R$ ${totalGeral.toFixed(2)}`;
     document.getElementById('totalDespesas').textContent = `R$ ${totalDespesas.toFixed(2)}`;
     document.getElementById('totalLucro').textContent = `R$ ${lucro.toFixed(2)}`;
     document.getElementById('totalComandas').textContent = comandas.length;
-    carregarDashboard();
+    document.getElementById('ticketMedio').textContent = `R$ ${ticketMedio.toFixed(2)}`;
+    document.getElementById('qtdVendas').textContent = vendas.length;
+    document.getElementById('qtdDespesas').textContent = despesas.length;
 }
 let comandasAbertas = JSON.parse(localStorage.getItem('comandasAbertas') || '[]');
 let indexComandaAtual = null;

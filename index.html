@@ -9,72 +9,152 @@
 <body>
 
     <div id="tela-dashboard" class="tela ativa">
-    <h1>Dashboard</h1>
-
-    <div class="card">
-        <span>💰 Vendas</span>
-        <strong id="totalVendas">R$ 0,00</strong>
+    <div class="tela-header">
+        <h1>Dashboard</h1>
+        <p class="tela-subtitulo">Visão geral do seu negócio</p>
     </div>
 
-    <div class="card">
-        <span>📉 Despesas</span>
-        <strong id="totalDespesas">R$ 0,00</strong>
+    <div class="dashboard-cards">
+        <div class="card">
+            <div class="card-topo">
+                <span class="card-titulo">Total de Vendas</span>
+                <span class="card-icone">💰</span>
+            </div>
+            <strong id="totalVendas" class="card-valor">R$ 0,00</strong>
+            <small class="card-desc">Vendas + Comandas fechadas</small>
+        </div>
+
+        <div class="card">
+            <div class="card-topo">
+                <span class="card-titulo">Total de Despesas</span>
+                <span class="card-icone">📉</span>
+            </div>
+            <strong id="totalDespesas" class="card-valor">R$ 0,00</strong>
+            <small class="card-desc">Gastos do período</small>
+        </div>
+
+        <div class="card card-lucro">
+            <div class="card-topo">
+                <span class="card-titulo">Lucro</span>
+                <span class="card-icone">📊</span>
+            </div>
+            <strong id="totalLucro" class="card-valor">R$ 0,00</strong>
+            <small class="card-desc">Vendas menos despesas</small>
+        </div>
+
+        <div class="card">
+            <div class="card-topo">
+                <span class="card-titulo">Comandas</span>
+                <span class="card-icone">🧾</span>
+            </div>
+            <strong id="totalComandas" class="card-valor">0</strong>
+            <small class="card-desc">Comandas fechadas</small>
+        </div>
     </div>
 
-    <div class="card">
-        <span>📊 Lucro</span>
-        <strong id="totalLucro">R$ 0,00</strong>
-    </div>
+    <div class="resumo-card">
+        <h2 class="resumo-titulo">Resumo</h2>
+        <p class="tela-subtitulo">Dados gerais do sistema</p>
 
-    <div class="card">
-        <span>🧾 Comandas</span>
-        <strong id="totalComandas">0</strong>
+        <div class="resumo-linha">
+            <span>Ticket médio por comanda</span>
+            <strong id="ticketMedio">R$ 0,00</strong>
+        </div>
+        <div class="resumo-linha">
+            <span>Total de vendas avulsas</span>
+            <strong id="qtdVendas">0</strong>
+        </div>
+        <div class="resumo-linha">
+            <span>Total de despesas registradas</span>
+            <strong id="qtdDespesas">0</strong>
+        </div>
     </div>
 </div>
-    </div>
 
     <div id="tela-vendas" class="tela">
-        <h1>Vendas</h1>
+    <div class="tela-header">
+        <h1>💰 Vendas</h1>
+        <p class="tela-subtitulo">Registre uma nova venda</p>
+    </div>
 
-        <h2>Nova Venda</h2>
-
+    <div class="form-card">
         <form id="formVenda" onsubmit="salvarVenda(event)">
 
-            <label for="produto">Produto</label>
-            <input type="text" id="produto" placeholder="Nome do produto" required>
+            <div class="campo">
+                <label for="produto">Produto</label>
+                <input type="text" id="produto" placeholder="Nome do produto" required>
+            </div>
 
-            <label for="valor">Valor</label>
-            <input type="number" id="valorVendas" placeholder="0,00" step="0.01" required>
+            <div class="campo">
+                <label for="valorVendas">Valor</label>
+                <div class="input-prefixo">
+                    <span>R$</span>
+                    <input type="number" id="valorVendas" placeholder="0,00" step="0.01" required>
+                </div>
+            </div>
 
-            <label for="pagamento">Forma de Pagamento</label>
-            <select id="pagamento" required>
-                <option value="">Selecione</option>
-                <option value="Dinheiro">Dinheiro</option>
-                <option value="PIX">PIX</option>
-                <option value="Crédito">Crédito</option>
-            </select>
+            <div class="campo">
+                <label for="pagamento">Forma de Pagamento</label>
+                <select id="pagamento" required>
+                    <option value="">Selecione</option>
+                    <option value="Dinheiro">💵 Dinheiro</option>
+                    <option value="PIX">📱 PIX</option>
+                    <option value="Crédito">💳 Crédito</option>
+                </select>
+            </div>
 
-            <button type="submit">Salvar Venda</button>
+            <button type="submit" class="btn-salvar">Salvar Venda</button>
 
         </form>
     </div>
+</div>
 
-    <div id="tela-despesas" class="tela">
-        <h1>Despesas</h1>
+   <div id="tela-despesas" class="tela">
+    <div class="tela-header">
+        <h1>📉 Despesas</h1>
+        <p class="tela-subtitulo">Registre uma nova despesa</p>
+    </div>
+
+    <div class="form-card">
         <form id="formDespesa" onsubmit="salvarDespesa(event)">
-            <label for="Despesa">Produto</label>
-            <input type="text" id="Despesa" placeholder="Nome da despesa" required>
-            <label for="valor">Valor</label>
-           <input type="number" id="valorDespesas" placeholder="0,00" step="0.01" required>
-            <button type="submit">Salvar Despesa</button>
+
+            <div class="campo">
+                <label for="Despesa">Descrição</label>
+                <input type="text" id="Despesa" placeholder="Nome da despesa" required>
+            </div>
+
+            <div class="campo">
+                <label for="valorDespesas">Valor</label>
+                <div class="input-prefixo">
+                    <span>R$</span>
+                    <input type="number" id="valorDespesas" placeholder="0,00" step="0.01" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-salvar btn-despesa">Salvar Despesa</button>
+
         </form>
     </div>
+</div>
 
     <div id="tela-historico" class="tela">
-        <h1>Histórico</h1>
-        <div id="listaHistorico"></div>
-        
+    <h1>Histórico</h1>
+
+    <div class="filtros">
+        <button class="filtro ativo" onclick="filtrarHistorico('todos', this)">Todos</button>
+        <button class="filtro" onclick="filtrarHistorico('venda', this)">Vendas</button>
+        <button class="filtro" onclick="filtrarHistorico('despesa', this)">Despesas</button>
+        <button class="filtro" onclick="filtrarHistorico('comanda', this)">Comandas</button>
     </div>
+
+    <div class="filtro-data">
+        <input type="date" id="filtroData">
+        <button onclick="aplicarFiltroData()">Filtrar</button>
+        <button onclick="limparFiltroData()">Limpar</button>
+    </div>
+
+    <div id="listaHistorico"></div>
+</div>
     </div>
 
     <div id="tela-comanda" class="tela">
