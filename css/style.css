@@ -390,10 +390,6 @@ nav button.ativo {
     border-color: var(--laranja);
 }
 
-.card-lucro {
-    border-left: 3px solid var(--laranja);
-}
-
 .card-topo {
     display: flex;
     justify-content: space-between;
@@ -451,4 +447,24 @@ nav button.ativo {
 .resumo-linha strong {
     color: white;
     font-size: 15px;
+}
+.tela-header {
+    padding: 20px 16px 8px;
+    border-bottom: 1px solid #1a1a1a;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.tela-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
 }

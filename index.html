@@ -5,11 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Hookah</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#FF6B00">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js');
+        }
+    </script>
 </head>
 <body>
 
     <div id="tela-dashboard" class="tela ativa">
     <div class="tela-header">
+        <img src="img/space.jpeg" alt="Space Hookah" class="logo">
         <h1>Dashboard</h1>
         <p class="tela-subtitulo">Visão geral do seu negócio</p>
     </div>
