@@ -411,3 +411,4 @@ function fecharModal() {
     document.getElementById('modalComanda').style.display = 'none';
     indexComandaAtual = null;
 }
+carregarDashboard();
