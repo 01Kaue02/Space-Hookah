@@ -412,3 +412,4 @@ function fecharModal() {
     indexComandaAtual = null;
 }
 carregarDashboard();
+carregarComandasAbertas();
