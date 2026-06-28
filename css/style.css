@@ -243,6 +243,9 @@ nav button.ativo {
     border-radius: 10px;
     color: white;
     font-size: 14px;
+    display: flex;                      /* ← adiciona */
+    justify-content: space-between;     /* ← adiciona */
+    align-items: center;                /* ← adiciona */
 }
 .tela-header {
     padding: 20px 16px 8px;
@@ -467,4 +470,21 @@ nav button.ativo {
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
+}
+
+.btn-excluir {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.btn-excluir:hover {
+    background: crimson;
+    border-color: crimson;
 }

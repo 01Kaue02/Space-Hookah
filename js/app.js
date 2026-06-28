@@ -68,44 +68,46 @@ function carregarHistorico(filtro = filtroAtivo, data = null) {
     }
 
     if (filtro === 'todos' || filtro === 'venda') {
-        vendas
-            .filter(v => baterData(v.data))
-            .forEach(venda => {
-                lista.innerHTML += `
-                    <div class="item-historico venda">
-                        🟢 Venda - ${venda.produto} - R$ ${parseFloat(venda.valor).toFixed(2)} - ${new Date(venda.data).toLocaleDateString('pt-BR')}
-                    </div>
-                `;
-            });
+        vendas.forEach((venda, index) => {
+            if (!baterData(venda.data)) return;
+            lista.innerHTML += `
+                <div class="item-historico venda">
+                    <span>🟢 Venda - ${venda.produto} - R$ ${parseFloat(venda.valor).toFixed(2)} - ${new Date(venda.data).toLocaleDateString('pt-BR')}</span>
+                    <button class="btn-excluir" onclick="excluirItem('vendas', ${index})">🗑</button>
+                </div>
+            `;
+        });
     }
 
     if (filtro === 'todos' || filtro === 'despesa') {
-        despesas
-            .filter(d => baterData(d.data))
-            .forEach(despesa => {
-                lista.innerHTML += `
-                    <div class="item-historico despesa">
-                        🔴 Despesa - ${despesa.despesa} - R$ ${parseFloat(despesa.valor).toFixed(2)} - ${new Date(despesa.data).toLocaleDateString('pt-BR')}
-                    </div>
-                `;
-            });
+        despesas.forEach((despesa, index) => {
+            if (!baterData(despesa.data)) return;
+            lista.innerHTML += `
+                <div class="item-historico despesa">
+                    <span>🔴 Despesa - ${despesa.despesa} - R$ ${parseFloat(despesa.valor).toFixed(2)} - ${new Date(despesa.data).toLocaleDateString('pt-BR')}</span>
+                    <button class="btn-excluir" onclick="excluirItem('despesas', ${index})">🗑</button>
+                </div>
+            `;
+        });
     }
 
     if (filtro === 'todos' || filtro === 'comanda') {
-        comandas
-            .filter(c => baterDataString(c.data))
-            .forEach(comanda => {
-                const itensLista = comanda.itens.map(i => `• ${i.item}`).join('<br>');
-                lista.innerHTML += `
-                    <div class="item-historico comanda">
+        comandas.forEach((comanda, index) => {
+            if (!baterDataString(comanda.data)) return;
+            const itensLista = comanda.itens.map(i => `• ${i.item}`).join('<br>');
+            lista.innerHTML += `
+                <div class="item-historico comanda">
+                    <div>
                         🧾 Comanda - ${comanda.cliente}<br>
                         Pagamento: ${comanda.pagamento}<br>
                         Total: R$ ${comanda.total.toFixed(2)}<br>
                         <small>${itensLista}</small><br>
                         <small>${comanda.data}</small>
                     </div>
-                `;
-            });
+                    <button class="btn-excluir" onclick="excluirItem('comandas', ${index})">🗑</button>
+                </div>
+            `;
+        });
     }
 
     if (lista.innerHTML === '') {
@@ -113,16 +115,13 @@ function carregarHistorico(filtro = filtroAtivo, data = null) {
     }
 }
 
-function filtrarHistorico(filtro, botao) {
-    document.querySelectorAll('.filtro').forEach(b => b.classList.remove('ativo'));
-    botao.classList.add('ativo');
-    const input = document.getElementById('filtroData').value;
-    const data = input
-        ? new Date(input + 'T00:00:00').toLocaleDateString('pt-BR')
-        : null;
-    carregarHistorico(filtro, data);
+function excluirItem(tipo, index) {
+    if (!confirm('Deseja excluir este registro?')) return;
+    const dados = JSON.parse(localStorage.getItem(tipo) || '[]');
+    dados.splice(index, 1);
+    localStorage.setItem(tipo, JSON.stringify(dados));
+    carregarHistorico(filtroAtivo);
 }
-
 function aplicarFiltroData() {
     const input = document.getElementById('filtroData').value;
     if (!input) {
@@ -411,5 +410,8 @@ function fecharModal() {
     document.getElementById('modalComanda').style.display = 'none';
     indexComandaAtual = null;
 }
-carregarDashboard();
-carregarComandasAbertas();
+window.onload = function() {
+    mudarTela('tela-dashboard');
+    carregarDashboard();
+    carregarComandasAbertas();
+}
