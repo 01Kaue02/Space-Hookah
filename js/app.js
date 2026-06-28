@@ -136,6 +136,15 @@ function limparFiltroData() {
     document.getElementById('filtroData').value = '';
     carregarHistorico(filtroAtivo, null);
 }
+function filtrarHistorico(filtro, botao) {
+    document.querySelectorAll('.filtro').forEach(b => b.classList.remove('ativo'));
+    botao.classList.add('ativo');
+    const input = document.getElementById('filtroData').value;
+    const data = input
+        ? new Date(input + 'T00:00:00').toLocaleDateString('pt-BR')
+        : null;
+    carregarHistorico(filtro, data);
+}
 
 
 function adicionarItemComanda() {
@@ -409,9 +418,4 @@ function salvarComandasAbertas() {
 function fecharModal() {
     document.getElementById('modalComanda').style.display = 'none';
     indexComandaAtual = null;
-}
-window.onload = function() {
-    mudarTela('tela-dashboard');
-    carregarDashboard();
-    carregarComandasAbertas();
 }
