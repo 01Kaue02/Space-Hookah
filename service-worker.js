@@ -1,15 +1,17 @@
 self.addEventListener('install', e => {
+    self.skipWaiting();
+});
+
+self.addEventListener('activate', e => {
     e.waitUntil(
-        caches.open('space-hookah').then(cache => {
-            return cache.addAll(['./', './css/style.css', './js/app.js']);
+        caches.keys().then(keys => {
+            return Promise.all(
+                keys.map(key => caches.delete(key))
+            );
         })
     );
 });
 
 self.addEventListener('fetch', e => {
-    e.respondWith(
-        caches.match(e.request).then(response => {
-            return response || fetch(e.request);
-        })
-    );
+    e.respondWith(fetch(e.request));
 });
